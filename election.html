@@ -1,0 +1,56 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>株と街のものがたり｜選挙の夜</title><style>
+*{box-sizing:border-box}body{margin:0;background:#e8eee8;color:#273e34;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif}main{max-width:680px;min-height:100dvh;margin:auto;background:#fffcf5}header{background:#284f42;color:#fff;padding:24px}header small{opacity:.7}h1{font-size:25px;margin:8px 0}header p{font-size:13px;line-height:1.8}.wrap{padding:22px}.eyebrow{font-size:12px;font-weight:800;color:#64816b;letter-spacing:.08em}.art{background:linear-gradient(140deg,#b9cfc0,#f1dfb8);height:105px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:35px;margin:15px 0 23px}.speaker{font-weight:800;color:#3c6a50}.story{white-space:pre-line;line-height:2;font-size:16px;margin:12px 0 22px}button{font:inherit;border:1px solid #bacdbd;border-radius:12px;padding:13px 15px;background:white;color:#294a38;line-height:1.6;text-align:left;cursor:pointer}button.primary{background:#2e6d51;color:#fff;text-align:center;font-weight:800;border-color:#2e6d51}.choices{display:grid;gap:10px}.box{background:#f0f4ec;border-radius:12px;padding:15px;line-height:1.85;font-size:14px;white-space:pre-line;margin:15px 0}.lesson{background:#f8eed8}.meter{height:12px;background:#d7e0d6;border-radius:99px;overflow:hidden;margin:8px 0}.meter div{height:100%;background:#558a68}.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}.stat{padding:13px;background:#eff4eb;border-radius:12px;font-size:12px}.stat b{display:block;font-size:20px;margin-top:4px}.nav{display:flex;gap:8px;margin-top:25px}.nav button{flex:1;text-align:center;font-size:12px}.fine{font-size:12px;line-height:1.8;color:#738174;margin-top:22px}input[type=range]{width:100%;accent-color:#337658}.pill{display:inline-block;background:#e2ecdf;padding:5px 9px;border-radius:50px;font-size:12px;margin:4px 5px 4px 0}
+</style></head><body><main><header><small>PYĀ INVEST GAME · EXPERIMENT 06</small><h1>🗳️ 株と街のものがたり</h1><p>外伝「選挙の夜」<br>予想を読み、投資額を決める。正しい判断でも、負ける夜はある。</p><a href="prototype04.html" style="color:#dbe8da;font-size:12px">前作：雨の日のオーブン</a></header><div class="wrap"><div class="eyebrow" id="label"></div><div class="art">🏛️　📰　⚡</div><div class="speaker" id="speaker"></div><div class="story" id="story"></div><div id="extra"></div><div class="choices" id="choices"></div><div class="nav"><button id="back">← 前へ</button><button id="restart">↺ 新しい選挙で遊ぶ</button></div><div class="fine">架空の国・候補者・企業・株価・確率を使った教材です。現実の選挙や市場の予測ではありません。数値は仕組みを体験するための仮定です。</div></div></main><script>
+const $=id=>document.getElementById(id), money=n=>Math.round(n).toLocaleString("ja-JP")+"円";
+const data=[
+{label:"序幕｜選挙まで3日",speaker:"語り手",text:"海の向こうの国、アルディア共和国。
+
+次の大統領を決める選挙が迫っていた。
+
+現職のグリーン候補は、電力と水の使用を抑えるため、新しい巨大データセンターの建設許可を厳しくすると公約した。
+
+対立するブルー候補は、AI産業を成長させるため建設を後押しすると約束している。
+
+街の電力会社〈ノヴァ電力〉の株価は、この一週間で12%下がっていた。"},
+{label:"序幕｜古書店の会話",speaker:"ユイ",text:"「ブルーが勝てばデータセンター需要が増えそう。でも、グリーンが勝ったら必ず株が下がる、とは言えないわ」
+
+「株価はもう12%下がっている。市場がどちらの勝利をどこまで予想しているか、そこが問題よ」
+
+「今日は資金10万円を預かる。全額投資する必要はないし、見送ってもいい」"},
+{label:"第一幕｜世論調査",speaker:"新聞記者ハナ",text:"「全国の調査では、グリーン候補が52%、ブルー候補が48%。ただしこれは回答者の支持率で、当選確率そのものではないの」
+
+「地域ごとの議席配分や、投票率、調査の誤差でも結果は変わるわ」"},
+{type:"lesson",label:"講義｜支持率と勝率",speaker:"ユイ",text:"「52対48と聞いて、グリーンの当選確率が52%だと思ってしまいがち。でも支持率と当選確率は別物よ」
+
+「この架空の選挙モデルでは、グリーンの勝率を60%、ブルーを40%と推定している。もちろんモデル自体も間違えることがあるわ」",lesson:"架空の選挙モデル：グリーン60%／ブルー40%。
+
+市場価格が示唆する期待はまた別。世論調査、当選確率、市場の織り込みを混同しないこと。"},
+{type:"investigate",label:"調査｜限られた時間",speaker:"ユイ",text:"「選挙前に、もう一つだけ調べられる。何を見たい？」
+
+調査先によって得られる情報が変わる。"},
+{type:"clue",label:"調査結果",speaker:"語り手",text:""},
+{type:"decision",label:"第二幕｜あなたの投資",speaker:"ミナ",text:"「どっちが勝つかだけじゃなくて、今の株価にどこまで織り込まれているかを考えなきゃいけないんだね」
+
+「それで、ノヴァ電力の株をいくら買う？」"},
+{type:"reveal",label:"第三幕｜開票の夜",speaker:"語り手",text:"深夜。投票所の明かりが消え、開票速報が始まった。
+
+レオが広場の時計を見つめる。
+
+「来た……！ どっちが勝った？」"},
+{type:"result",label:"終幕｜結果と判断",speaker:"ユイ",text:"「勝ったか負けたかと、判断がよかったかどうかは分けて考えよう」
+
+「次の選挙では、同じ情報から別の結果になるかもしれない。でも、調査で得た根拠とリスク管理は次にも使えるはずよ」"}
+];
+let s;try{s=JSON.parse(localStorage.getItem("pya-invest-election-v1")||"null")}catch{}if(!s||!Number.isInteger(s.i)||s.i<0||s.i>=data.length)s=fresh();
+function fresh(){const p=Math.random();return {i:0,winner:p<.6?"green":"blue",clue:null,amount:null}}
+function save(){localStorage.setItem("pya-invest-election-v1",JSON.stringify(s))}function next(){s.i=Math.min(s.i+1,data.length-1);save();render()}function button(t,fn,primary=false){const b=document.createElement("button");b.textContent=t;b.className=primary?"primary":"";b.onclick=fn;$("choices").append(b)}function panel(t,cls="box"){const d=document.createElement("div");d.className=cls;d.textContent=t;$("extra").append(d);return d}
+function render(){const a=data[s.i];$("label").textContent=a.label;$("speaker").textContent=a.speaker;$("story").textContent=a.text;$("choices").replaceChildren();$("extra").replaceChildren();$("back").disabled=s.i===0;
+if(a.type==="lesson"){panel(a.lesson,"box lesson");button("続きを読む →",next,true)}
+else if(a.type==="investigate"){button("投資家たちの取引と市場の期待を見る",()=>{s.clue="market";next()});button("ノヴァ電力の事業と収益構造を見る",()=>{s.clue="company";next()});button("選挙予測モデルの根拠を調べる",()=>{s.clue="poll";next()})}
+else if(a.type==="clue"){const clues={market:"市場の観測：選挙に連動した架空の取引価格から、投資家はグリーン勝利をおよそ75%織り込んでいるようだ。ただし、流動性やリスクプレミアムで歪み得る。\n\n選挙モデルの60%より悲観的に見える。株価はすでに12%下落している。",company:"企業資料：ノヴァ電力の売上の35%がデータセンター関連。残りは家庭・工場向け。グリーン勝利でも需要がゼロになるわけではない。建設規制が実際にどう施行されるかも不明。",poll:"選挙モデルの内訳：グリーン勝率60%。投票率が少し変わると45〜70%まで振れる。調査誤差は大きく、確実な勝利とはいえない。"};$("story").textContent=clues[s.clue||"poll"];panel("ヒント：調査で手掛かりは増えるが、未来の結果が確定するわけではない。");button("投資判断へ →",next,true)}
+else if(a.type==="decision"){const wrap=document.createElement("div");wrap.className="box";const t=document.createElement("div");t.textContent="投資額：0円（見送り）";const slider=document.createElement("input");slider.type="range";slider.min=0;slider.max=100000;slider.step=10000;slider.value=s.amount??0;slider.oninput=()=>{t.textContent="投資額："+money(+slider.value)+"／残す現金："+money(100000-slider.value)};slider.oninput();wrap.append(t,slider);$("extra").append(wrap);panel("仮定：グリーン勝利なら株価 -8%、ブルー勝利なら +12%。\nモデル上の勝率は60%対40%。この条件での株価変動の期待値は0%。\n実際の株価には政策以外の要因も作用する。","box lesson");button("この金額で選挙結果を見る →",()=>{s.amount=+slider.value;next()},true)}
+else if(a.type==="reveal"){const green=s.winner==="green";panel((green?"グリーン候補が勝利。":"ブルー候補が勝利。")+"\n\n"+(green?"市場は建設規制の強化を懸念し、ノヴァ電力の株価は8%下落した。":"市場の警戒よりAI産業支援が強くなり、ノヴァ電力の株価は12%上昇した。"),"box lesson");button("損益と判断を振り返る →",next,true)}
+else if(a.type==="result"){const move=s.winner==="green"?-.08:.12;const amt=s.amount??0;panel("投資額："+money(amt)+"\n株価変動："+(move>0?"+":"")+(move*100).toFixed(0)+"%\n損益："+(move*amt>0?"+":"")+money(move*amt)+"\n最終資産："+money(100000+move*amt));panel("判断の質を振り返る\n\n・選挙モデルはグリーン60%、市場は約75%を織り込んでいた可能性がある。\n・この単純な価格変動モデルでは、投資の期待損益は0円。『勝つ確率が高い候補を当てた』だけでは優位性にならない。\n・買付額が大きいほど利益も損失も大きくなる。\n・結果の当たり外れだけでは、判断の質は測れない。","box lesson");button("別の選挙結果で再挑戦 ↺",()=>{s=fresh();save();render()},true)}
+else button("続きを読む →",next,true)}
+$("back").onclick=()=>{if(s.i>0){s.i--;save();render()}};$("restart").onclick=()=>{if(confirm("別の選挙で最初から始めますか？")){s=fresh();save();render()}};render();
+</script></body></html>
